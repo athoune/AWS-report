@@ -8,7 +8,7 @@ class Report:
 		for line in self.reader:
 			yield {
 				'service' : line[0],
-				'action': line[1:2],
+				'action': line[1:3],
 				'start' : line[3],
 				'end'   : line[4],
 				'value' : line[5]
