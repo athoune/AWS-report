@@ -49,5 +49,5 @@ r = Report('report.csv')
 #print
 #print 'requests', r.sum('SelectGet', 'Requests')
 print 'box usage', r.sum('SelectGet', 'BoxUsage')
-r.draw(('SelectGet', 'Requests'), ('PutAttributes','Requests'))
+r.draw(('SelectGet', 'Requests'), ('PutAttributes','Requests'), ('GetAttributes', 'Requests'), ('ListDomains', 'Requests'))
 #

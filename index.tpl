@@ -18,8 +18,12 @@
 				series: {
 					lines: {
 						show: true
-						}
 					}
+				},
+				xaxis: {
+					mode: "time",
+					timeformat: "%%y-%%m-%%d"
+				}
 			};
 			var plot = $.plot($("#graph"), data, options);
 		});
@@ -28,6 +32,6 @@
 	</head>
 	<body>
 		<h1>AWS report</h1>
-		<div id="graph" style="width: 1000px; height:400px"></div>
+		<div id="graph" style="width: 1200px; height:400px"></div>
 	</body>
 </html>
