@@ -1,3 +1,4 @@
 *.csv
 *.pyc
 index.html
+.DS_Store
