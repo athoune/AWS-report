@@ -10,14 +10,10 @@ class Report:
 		r = csv.reader(open(self.f), delimiter=',')
 		r.next()
 		for line in r:
-			yield {
-				'service' : line[0],
-				'operation': line[1],
-				'usageType': line[2],
-				'start' : datetime.strptime(line[3], '%m/%d/%y %H:%M:%S'),
-				'end'   : datetime.strptime(line[4], '%m/%d/%y %H:%M:%S'),
-				'value' : float(line[5])
-				}
+			if line[0] == 'AmazonS3':
+				yield S3_filter(line)
+			if line[0] == 'AmazonSimpleDB':
+				yield SDB_filter(line)
 	def sum(self, action, metric):
 		total = 0.0
 		for line in self.__iter__():
@@ -43,6 +39,17 @@ class Report:
 		tpl.close()
 		target.close()
 
+def SDB_filter(line):
+	return {
+		'service' : line[0],
+		'operation': line[1],
+		'usageType': line[2],
+		'start' : datetime.strptime(line[3], '%m/%d/%y %H:%M:%S'),
+		'end'   : datetime.strptime(line[4], '%m/%d/%y %H:%M:%S'),
+		'value' : float(line[5])
+		}
+#def S3_filter(line):
+	
 r = Report('report.csv')
 #for line in r:
 #	print line
