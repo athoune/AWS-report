@@ -1,4 +1,10 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+Draw graph from AWS csv report
+"""
+__author__ = "Mathieu Lecarme <mathieu@garambrogne.net>"
 
 import csv
 from datetime import datetime
