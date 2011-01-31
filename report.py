@@ -53,9 +53,50 @@ class S3(object):
 		'value' : float(line[6])
 		}
 
+class SQS(object):
+	def filter(self, line):
+		return {
+		'service' : line[0],
+		'operation': line[1],
+		'usageType': line[2],
+		'start' : datetime.strptime(line[3], '%m/%d/%y %H:%M:%S'),
+		'end'   : datetime.strptime(line[4], '%m/%d/%y %H:%M:%S'),
+		'value' : float(line[5])
+		}
+	def draw_request(self, report):
+		report.draw('sqs_request', ('Receive','Requests-RBP'), ('Send','Requests-RBP'))
+	def draw_bytes(self, report):
+		report.draw('sqs_bytes', ('Receive','EC2DataTransfer-Out-Bytes'), ('Send','EC2DataTransfer-In-Bytes'))
+	def draw_all(self, report):
+		self.draw_request(report)
+		self.draw_bytes(report)
+
+class CloudFront(object):
+	def filter(self, line):#Service, Operation, UsageType, Resource, StartTime, EndTime, UsageValue
+		return {
+		'service' : line[0],
+		'operation': line[1],
+		'usageType': line[2],
+		'resource' : line[3],
+		'start' : datetime.strptime(line[4], '%m/%d/%y %H:%M:%S'),
+		'end'   : datetime.strptime(line[5], '%m/%d/%y %H:%M:%S'),
+		'value' : float(line[6])
+		}
+	def draw_request(self, report):
+		report.draw('cf_request', ('GET','EU-Requests-Tier1'), ('GET','JP-Requests-Tier1'), ('GET','US-Requests-Tier1'), ('GET','AP-Requests-Tier1') )
+	def draw_bytes(self, report):
+		report.draw('cf_bytes', ('GET','EU-DataTransfer-Out-Bytes'), ('GET','JP-DataTransfer-Out-Bytes'), ('GET','US-DataTransfer-Out-Bytes'), ('GET','AP-DataTransfer-Out-Bytes'))
+	def draw_all(self, report):
+		self.draw_request(report)
+		#self.draw_bytes(report)
+
+	
+
 filters = {
 	'AmazonS3': S3,
-	'AmazonSimpleDB': SDB
+	'AmazonSimpleDB': SDB,
+	'AWSQueueService': SQS,
+	'AmazonCloudFront': CloudFront
 }
 
 class Report:
@@ -87,7 +128,7 @@ class Report:
 				if line['operation'] == filtr[0] and fnmatch.fnmatch(line['usageType'], filtr[1]):
 					values.append([calendar.timegm(line['start'].timetuple()) * 1000, line['value']])
 			data.append({
-				'label': filtr[0],
+				'label': ':'.join(filtr),
 				'data': values,
 				'hoverable': True
 			})
