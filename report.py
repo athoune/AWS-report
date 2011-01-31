@@ -90,13 +90,31 @@ class CloudFront(object):
 		self.draw_request(report)
 		#self.draw_bytes(report)
 
+class SES(object):
+	def filter(self,line):#Service, Operation, UsageType, StartTime, EndTime, UsageValue
+		return {
+		'service' : line[0],
+		'operation': line[1],
+		'usageType': line[2],
+		'start' : datetime.strptime(line[3], '%m/%d/%y %H:%M:%S'),
+		'end'   : datetime.strptime(line[4], '%m/%d/%y %H:%M:%S'),
+		'value' : float(line[5])
+		}
+	def draw_request(self, report):
+		report.draw('ses_request', ('SendEmail','Requests'), ('SendEmail','Recipients'), ('SendEmail','Requests-EC2'))
+	def draw_bytes(self, report):
+		report.draw('ses_bytes', ('SendEmail','DataTransfer-In-Bytes'), ('SendEmail','DataTransfer-Out-Bytes'), ('SendEmail', 'EC2DataTransfer-In-Bytes'))
+	def draw_all(self, report):
+		self.draw_request(report)
+		self.draw_bytes(report)
 	
 
 filters = {
 	'AmazonS3': S3,
 	'AmazonSimpleDB': SDB,
 	'AWSQueueService': SQS,
-	'AmazonCloudFront': CloudFront
+	'AmazonCloudFront': CloudFront,
+	'AmazonSES': SES
 }
 
 class Report:
