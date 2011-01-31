@@ -27,4 +27,4 @@ Command
 Screenshot
 ----------
 
-![Graph ScreenShot](report_example.png "Graph sample")
+![Graph ScreenShot](raw/master/report_example.png "Graph sample")
