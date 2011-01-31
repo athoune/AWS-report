@@ -27,4 +27,4 @@ Command
 Screenshot
 ----------
 
-![Graph ScreenShot](raw/master/report_example.png "Graph sample")
+![Graph ScreenShot](AWS-report/raw/master/report_example.png "Graph sample")
